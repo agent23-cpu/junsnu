@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>약사고등학교 발표 도우미</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <main class="left-panel">
+            <div class="timer-section">
+                <h2>발표 타이머</h2>
+                <div class="timer-display" id="timer-display">00:00</div>
+                <div class="timer-controls">
+                    <button class="time-btn" data-time="60">+ 1분</button>
+                    <button class="time-btn" data-time="180">+ 3분</button>
+                    <button class="time-btn" data-time="300">+ 5분</button>
+                </div>
+                <div class="action-controls">
+                    <button id="start-timer" class="action-btn start">시작</button>
+                    <button id="pause-timer" class="action-btn pause">일시정지</button>
+                    <button id="reset-timer" class="action-btn reset">초기화</button>
+                </div>
+            </div>
+
+            <div class="picker-section">
+                <h2>랜덤 발표자 추첨</h2>
+                <div class="picker-display" id="picker-display">
+                    <span class="placeholder">추첨을 시작해주세요</span>
+                </div>
+                <div class="picker-controls">
+                    <button id="start-picker" class="action-btn start-picker">추첨하기</button>
+                    <label class="exclude-label">
+                        <input type="checkbox" id="exclude-picked" checked>
+                        이미 뽑힌 사람 제외하기
+                    </label>
+                </div>
+            </div>
+        </main>
+
+        <aside class="right-panel">
+            <div class="list-section">
+                <h2>학생 명단</h2>
+                <textarea id="student-input" placeholder="이름을 쉼표(,)로 구분해서 입력하세요.&#10;예: 김철수, 이영희, 홍길동"></textarea>
+                <div class="list-status">
+                    <span>전체: <strong id="total-count">0</strong>명</span>
+                    <span>남은 인원: <strong id="remaining-count">0</strong>명</span>
+                </div>
+                
+                <h3>당첨자 목록</h3>
+                <ul id="picked-list" class="picked-list"></ul>
+                <button id="reset-list" class="action-btn reset-list">명단 초기화</button>
+            </div>
+        </aside>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
