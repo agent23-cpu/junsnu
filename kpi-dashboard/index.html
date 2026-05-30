@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI KPI 비즈니스 대시보드</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="landing-page" class="view-section active">
+        <header>
+            <div class="logo">BizAI Dash</div>
+        </header>
+        <main class="hero">
+            <h1>사업 데이터를 입력하면<br><span class="highlight">AI가 경영 상태를 분석해 드립니다</span></h1>
+            <p>복잡한 지표 계산부터 업종별 벤치마킹, 그리고 맞춤형 개선 전략까지 한 번에 확인하세요.</p>
+            <button id="btn-go-input" class="btn-primary">무료로 분석 시작하기</button>
+        </main>
+    </div>
+
+    <div id="input-page" class="view-section">
+        <header>
+            <div class="logo">BizAI Dash</div>
+        </header>
+        <main class="form-container">
+            <h2>데이터 입력</h2>
+            <p>정확한 분석을 위해 지난달과 이번 달의 데이터를 입력해주세요.</p>
+            
+            <form id="kpi-form">
+                <div class="form-group">
+                    <label>업종 선택</label>
+                    <select id="industry" required>
+                        <option value="shopping">쇼핑몰</option>
+                        <option value="cafe">카페/베이커리</option>
+                        <option value="restaurant">일반 음식점</option>
+                        <option value="saas">IT/SaaS</option>
+                        <option value="academy">학원/교육</option>
+                        <option value="hospital">병의원</option>
+                    </select>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-card">
+                        <h3>지난달 (비교용)</h3>
+                        <div class="form-group"><label>매출 (원)</label><input type="number" id="prev-sales" required></div>
+                        <div class="form-group"><label>총 비용 (원)</label><input type="number" id="prev-cost" required></div>
+                        <div class="form-group"><label>총 고객 수 (명)</label><input type="number" id="prev-customers" required></div>
+                    </div>
+                    
+                    <div class="form-card">
+                        <h3>이번 달 (분석용)</h3>
+                        <div class="form-group"><label>매출 (원)</label><input type="number" id="curr-sales" required></div>
+                        <div class="form-group"><label>총 비용 (원)</label><input type="number" id="curr-cost" required></div>
+                        <div class="form-group"><label>총 고객 수 (명)</label><input type="number" id="curr-customers" required></div>
+                        <div class="form-group"><label>신규 고객 수 (명)</label><input type="number" id="curr-new-customers" required></div>
+                        <div class="form-group"><label>광고/마케팅 비용 (원)</label><input type="number" id="curr-ad-spend" required></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary full-width">AI 분석 결과 보기</button>
+            </form>
+        </main>
+    </div>
+
+    <div id="dashboard-page" class="view-section bg-light">
+        <header>
+            <div class="logo">BizAI Dash</div>
+            <button id="btn-reinput" class="btn-secondary">데이터 다시 입력</button>
+        </header>
+        <main class="dashboard-container">
+            <h2 class="dash-title">📊 핵심 성과 지표 (KPI)</h2>
+            
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-title">순이익률 (Net Margin)</div>
+                    <div class="kpi-value" id="val-margin">0%</div>
+                    <div class="kpi-desc">매출 대비 순이익의 비율입니다.</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">객단가 (ARPU)</div>
+                    <div class="kpi-value" id="val-arpu">0원</div>
+                    <div class="kpi-desc">고객 1인당 평균 결제 금액입니다.</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">고객획득비용 (CAC)</div>
+                    <div class="kpi-value" id="val-cac">0원</div>
+                    <div class="kpi-desc">신규 고객 1명을 데려오는데 쓴 돈입니다.</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">광고 수익률 (ROAS)</div>
+                    <div class="kpi-value" id="val-roas">0%</div>
+                    <div class="kpi-desc">광고비 대비 얼마나 매출을 냈는지 보여줍니다.</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">재구매율 (Retention)</div>
+                    <div class="kpi-value" id="val-retention">0%</div>
+                    <div class="kpi-desc">전체 고객 중 기존 고객(재방문)의 비율입니다.</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">매출 성장률 (Growth)</div>
+                    <div class="kpi-value" id="val-growth">0%</div>
+                    <div class="kpi-desc">지난달 대비 매출이 얼마나 올랐는지 보여줍니다.</div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <!-- 차트 영역 -->
+                <div class="chart-section">
+                    <div class="chart-card">
+                        <h3>매출 및 비용 추이</h3>
+                        <canvas id="chart-sales"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>고객 구성 비율</h3>
+                        <canvas id="chart-customers"></canvas>
+                    </div>
+                </div>
+
+                <!-- AI 분석 및 벤치마킹 영역 -->
+                <div class="analysis-section">
+                    <div class="analysis-card">
+                        <h3>🤖 AI 경영 컨설턴트 분석</h3>
+                        <div id="ai-report" class="ai-report-content">
+                            <!-- JS로 채워짐 -->
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-card">
+                        <h3>🏆 업종 평균 벤치마킹 (<span id="bench-industry"></span>)</h3>
+                        <div id="benchmarks" class="benchmark-list">
+                            <!-- JS로 뱃지와 비교 렌더링 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
